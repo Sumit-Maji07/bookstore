@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -41,6 +42,38 @@ function Login() {
         }
       });
   };
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    // If this component is mounted at /login, ensure the dialog is shown
+    try {
+      const dlg = document.getElementById("my_modal_3");
+      if (!dlg) return;
+      if (location.pathname === "/login") {
+        if (typeof dlg.showModal === "function") {
+          dlg.showModal();
+        } else {
+          dlg.setAttribute("open", "");
+        }
+      }
+
+      // If the dialog is closed (native close or user action) while on /login, navigate home
+      const onClose = () => {
+        if (window.location.pathname === "/login") {
+          navigate("/");
+        }
+      };
+      dlg.addEventListener("close", onClose);
+      dlg.addEventListener("cancel", onClose);
+      return () => {
+        dlg.removeEventListener("close", onClose);
+        dlg.removeEventListener("cancel", onClose);
+      };
+    } catch (e) {
+      // ignore
+    }
+  }, [location]);
 
   return (
     <div>

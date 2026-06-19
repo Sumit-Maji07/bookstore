@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Courses from "./courses/Courses";
 import Contact from "./components/contact";
 import Signup from "./components/Signup";
+import Login from "./components/Login";
 import About from "./components/about";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/AuthProvider";
@@ -23,6 +24,7 @@ function App() {
             element={authUser ? <Courses /> : <Navigate to="/signup" />}
           />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Toaster />
       </div>
